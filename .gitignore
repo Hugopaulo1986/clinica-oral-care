@@ -1,0 +1,18 @@
+# Ignorar configurações sensíveis
+.env
+config.php
+
+# Ignorar dependências do Composer
+/vendor/
+
+# Ignorar arquivos de log e debug
+*.log
+*.txt
+/logs/
+debug_agendamento.txt
+log_envio.txt
+log_lembretes.txt
+
+# Ignorar arquivos do sistema
+.DS_Store
+Thumbs.db

@@ -1,0 +1,357 @@
+/* 🔹 Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+/* 🔹 Cabeçalho e Menu */
+header {
+    background: #1ABC9C;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-list a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 12px 18px;
+    transition: 0.3s;
+}
+
+.nav-list a:hover {
+    color: #0f665a;
+}
+
+/* 🔹 Banner Principal */
+.banner {
+    text-align: center;
+    background: url('../img/banner.jpg') no-repeat center center/cover;
+    color: #ffffff;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 80px;
+}
+
+/* 🔹 Texto no Banner */
+.banner h1 {
+    font-size: 42px;
+    color: #222;
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.banner p {
+    font-size: 20px;
+    color: #222;
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
+    margin-bottom: 20px;
+}
+
+/* 🔹 Botões Centrais */
+.botoes {
+    margin: 10px 0;
+}
+
+.btn {
+    background: #16A085;
+    color: white;
+    padding: 14px 28px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: 0.3s;
+    margin: 10px;
+    display: inline-block;
+    font-size: 18px;
+}
+
+.btn:hover {
+    background: #0f665a;
+}
+
+/* 🔹 Logo Centralizado Abaixo dos Botões */
+.logo-central {
+    display: block;
+    margin: 32px auto 0;
+    height: 180px;
+    width: auto;
+}
+
+/* 🔹 Seção de Informação */
+.info {
+    text-align: center;
+    padding: 50px 20px;
+}
+
+.info h2 {
+    font-size: 30px;
+    color: #16A085;
+    margin-bottom: 15px;
+}
+
+.info p {
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto;
+    color: #333;
+}
+
+/* 🔹 Cards de Informações */
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 30px;
+}
+
+.card {
+    background: #eaeaea;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 320px;
+    color: #222;
+    text-align: center;
+}
+
+/* 🔹 Container principal */
+.container {
+    width: 50%;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* 🔹 Formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+label {
+    font-weight: bold;
+}
+
+input, select, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+/* 🔹 Botão de Cadastro */
+button {
+    background-color: #16A085;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #0f665a;
+}
+
+/* 🔹 Rodapé */
+footer {
+    background: #1ABC9C !important;
+    text-align: center;
+    color: #ffffff !important;
+    padding: 20px 0;
+    margin-top: 30px;
+    font-size: 16px;
+}
+
+/* 🔹 Responsividade */
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .container {
+        width: 90%;
+    }
+
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .logo-central {
+        height: 180px;
+    }
+}
+
+/* 🔹 Navbar */
+.navbar {
+    background-color: #1ABC9C;
+    padding: 20px;
+    text-align: center;
+}
+
+.navbar .nav-link {
+    color: #ffffff !important;
+}
+
+.navbar .nav-link:hover {
+    color: #ffffff !important;
+    background-color: transparent !important;
+}
+
+/* 🔹 Botão Agendar */
+.btn-agendar {
+    display: inline-block;
+    margin-top: 20px;
+    background-color: #16A085;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-agendar:hover {
+    background-color: #0f665a;
+}
+
+/* 🔹 Tabela de Consultas */
+.tabela-consultas {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.tabela-consultas th,
+.tabela-consultas td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tabela-consultas th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.status-pendente {
+    color: orange;
+    font-weight: bold;
+}
+
+.status-confirmado {
+    color: green;
+    font-weight: bold;
+}
+
+.status-cancelado {
+    color: red;
+    font-weight: bold;
+}
+
+.acao-btn {
+    text-decoration: none;
+    font-weight: bold;
+    display: inline-block;
+    margin: 4px 0;
+}
+
+.acao-btn.confirmar {
+    color: green;
+}
+
+.acao-btn.desmarcar {
+    color: #8B008B;
+}
+
+.acao-btn:hover {
+    text-decoration: underline;
+}
+
+/* 🔹 Seção de Consultas */
+.consultas-container {
+    max-width: 95%;
+    margin: 40px auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 🔹 Tabela de Pacientes (nova padronização) */
+.table {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+}
+
+.table thead {
+    background-color: #d1eee7;
+}
+
+.table th {
+    font-weight: bold;
+    color: #0f665a;
+    text-align: center;
+}
+
+.table td {
+    text-align: center;
+    color: #333;
+    vertical-align: middle;
+}
+
+/* 🔹 Títulos */
+h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #0f665a;
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* 🔹 Espaçamento das seções */
+main.container {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}

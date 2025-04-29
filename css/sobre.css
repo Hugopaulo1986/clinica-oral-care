@@ -1,0 +1,41 @@
+/* 🔹 Estilização da Página Sobre Nós */
+.sobre {
+    text-align: center;
+    padding: 50px 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+.sobre h1 {
+    font-size: 32px;
+    margin-bottom: 20px;
+}
+
+.sobre p {
+    font-size: 18px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* 🔹 Ajuste para centralizar imagem e texto */
+.sobre-conteudo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.sobre-conteudo img {
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.sobre-conteudo .texto {
+    width: 80%;
+    max-width: 600px;
+}
