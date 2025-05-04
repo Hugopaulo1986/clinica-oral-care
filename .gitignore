@@ -16,3 +16,4 @@ log_lembretes.txt
 # Ignorar arquivos do sistema
 .DS_Store
 Thumbs.db
+teste_email.php
