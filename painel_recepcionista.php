@@ -37,24 +37,31 @@ $nome_usuario = $usuario ? htmlspecialchars($usuario["nome"]) : "Usuário";
     <p>Aqui você pode gerenciar agendamentos e pacientes.</p>
 
     <div class="cards">
-        <div class="card">
-            <h3>📅 Agendamentos</h3>
-            <p>Gerencie as consultas dos pacientes.</p>
-            <a href="agendamento_consulta.php" class="btn">Acessar</a>
-        </div>
-
-        <div class="card">
-            <h3>🔍 Consultas</h3>
-            <p>Visualize e gerencie todas as consultas.</p>
-            <a href="visualizar_consultas.php" class="btn">Acessar</a>
-        </div>
-
-        <div class="card">
-            <h3>👥 Cadastro de Pacientes</h3>
-            <p>Cadastre novos pacientes no sistema.</p>
-            <a href="cadastro_paciente.php" class="btn">Acessar</a>
-        </div>
+    <div class="card">
+        <h3>📅 Agendamentos</h3>
+        <p>Gerencie as consultas dos pacientes.</p>
+        <a href="agendamento_consulta.php" class="btn">Acessar</a>
     </div>
+
+    <div class="card">
+        <h3>🔍 Consultas</h3>
+        <p>Visualize e gerencie todas as consultas.</p>
+        <a href="visualizar_consultas.php" class="btn">Acessar</a>
+    </div>
+
+    <div class="card">
+        <h3>👥 Cadastro de Pacientes</h3>
+        <p>Cadastre novos pacientes no sistema.</p>
+        <a href="cadastro_paciente.php" class="btn">Acessar</a>
+    </div>
+
+    <div class="card">
+        <h3>📝 Gerenciar Pacientes</h3>
+        <p>Edite os dados dos pacientes cadastrados.</p>
+        <a href="gerenciar_pacientes.php" class="btn">Acessar</a>
+    </div>
+</div>
+
 </main>
 
 <footer>

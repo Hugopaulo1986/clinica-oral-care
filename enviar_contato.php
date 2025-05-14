@@ -1,8 +1,11 @@
 <?php
-use SendGrid\Mail\Mail;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
 require 'config.php';
-require __DIR__ . '/vendor/autoload.php';
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -14,10 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-// Forçar uso do certificado SSL correto (evita erro cURL 60)
-putenv('CURL_CA_BUNDLE=C:\xampp\php\extras\ssl\cacert.pem');
-
-// Sanitizar entrada
+// Captura dados
 $nome = trim($_POST['nome'] ?? '');
 $email = filter_var($_POST['email'] ?? '', FILTER_SANITIZE_EMAIL);
 $mensagem = trim($_POST['mensagem'] ?? '');
@@ -28,31 +28,46 @@ if ($nome === '' || $email === '' || $mensagem === '') {
     exit();
 }
 
-// Criar email
-$emailObj = new Mail();
-$emailObj->setFrom("oralcare.consultas@gmail.com", "Clínica Oral Care");
-$emailObj->setSubject("📩 Novo Contato via Site");
-$emailObj->addTo("oralcare.consultas@gmail.com", "Clínica Oral Care");
-
-$htmlContent = "<h3>📬 Novo contato recebido</h3>"
-    . "<p><strong>Nome:</strong> {$nome}</p>"
-    . "<p><strong>E-mail:</strong> {$email}</p>"
-    . "<p><strong>Mensagem:</strong><br>{$mensagem}</p>";
-
-$emailObj->addContent("text/html", $htmlContent);
-
-// Enviar
-$sendgrid = new \SendGrid(SENDGRID_API_KEY);
 try {
-    $response = $sendgrid->send($emailObj);
-    if ($response->statusCode() >= 200 && $response->statusCode() < 300) {
-        $_SESSION['alert'] = ['type' => 'success', 'message' => '✅ Mensagem enviada com sucesso!'];
-    } else {
-        $_SESSION['alert'] = ['type' => 'warning', 'message' => 'Mensagem não pôde ser enviada. Erro HTTP ' . $response->statusCode()];
-    }
+    $mail = new PHPMailer(true);
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'oralcare.consultas@gmail.com';
+    $mail->Password   = 'mhge xelw vkrs emll'; 
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+    $mail->Port       = 587;
+    $mail->CharSet    = 'UTF-8';
+
+    // SSL para localhost
+    $mail->SMTPOptions = [
+        'ssl' => [
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true,
+        ]
+    ];
+
+    // De quem o site envia (fixo para não bloquear)
+    $mail->setFrom('oralcare.consultas@gmail.com', 'Clínica Oral Care');
+    $mail->addAddress('oralcare.consultas@gmail.com', 'Clínica Oral Care');
+
+    $mail->isHTML(true);
+    $mail->Subject = '📩 Novo Contato via Site';
+    $mail->Body    = "
+        <h3>📬 Novo contato recebido</h3>
+        <p><strong>Nome:</strong> {$nome}</p>
+        <p><strong>E-mail:</strong> {$email}</p>
+        <p><strong>Mensagem:</strong><br>{$mensagem}</p>
+    ";
+
+    $mail->send();
+    $_SESSION['alert'] = ['type' => 'success', 'message' => '✅ Mensagem enviada com sucesso!'];
+
 } catch (Exception $e) {
-    $_SESSION['alert'] = ['type' => 'danger', 'message' => 'Erro: ' . $e->getMessage()];
+    $_SESSION['alert'] = ['type' => 'danger', 'message' => 'Erro: ' . $mail->ErrorInfo];
 }
 
 header('Location: form_contato.php');
 exit();
+?>

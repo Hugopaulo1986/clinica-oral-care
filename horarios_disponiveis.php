@@ -1,5 +1,6 @@
 <?php
 require 'config.php';
+date_default_timezone_set('America/Sao_Paulo');
 
 $data = $_GET['data'] ?? '';
 $dentista_id = $_GET['dentista_id'] ?? '';
@@ -7,6 +8,7 @@ $dentista_id = $_GET['dentista_id'] ?? '';
 $horarios_totais = [];
 $inicio = strtotime("08:00");
 $fim = strtotime("16:30");
+
 while ($inicio <= $fim) {
     $horarios_totais[] = date("H:i", $inicio);
     $inicio = strtotime("+30 minutes", $inicio);
@@ -14,7 +16,7 @@ while ($inicio <= $fim) {
 
 $horarios_ocupados = [];
 
-if ($data && $dentista_id) {
+if (!empty($data) && !empty($dentista_id)) {
     $sql = "SELECT hora_consulta FROM consultas 
             WHERE data_consulta = ? 
               AND dentista_id = ? 
@@ -25,7 +27,7 @@ if ($data && $dentista_id) {
     $result = $stmt->get_result();
 
     while ($row = $result->fetch_assoc()) {
-        $horarios_ocupados[] = substr($row['hora_consulta'], 0, 5); // Ex: "08:00"
+        $horarios_ocupados[] = substr($row['hora_consulta'], 0, 5);
     }
 }
 
@@ -33,3 +35,4 @@ $horarios_disponiveis = array_values(array_diff($horarios_totais, $horarios_ocup
 
 header('Content-Type: application/json');
 echo json_encode($horarios_disponiveis);
+?>

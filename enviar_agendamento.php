@@ -79,8 +79,7 @@ try {
     $mail->Host = 'smtp.gmail.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'oralcare.consultas@gmail.com';
-    $mail->Password = 'mhge xelw vkrs emll
-'; 
+    $mail->Password = 'mhge xelw vkrs emll'; 
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
     $mail->Port = 587;
     $mail->CharSet = 'UTF-8';

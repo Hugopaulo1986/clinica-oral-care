@@ -1,35 +1,57 @@
 <?php
-session_start();
+require 'config.php';
 
-if (!isset($_SESSION["usuario_id"]) || !in_array($_SESSION["tipo"], ["dentista", "recepcionista"])) {
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (!isset($_SESSION["dentista_id"]) && !isset($_SESSION["recepcionista_id"])) {
     header("Location: login.php");
     exit();
 }
 
-require_once('config.php');
-
-$usuario_id = $_SESSION["usuario_id"];
-$tipo = $_SESSION["tipo"];
-$tabela = ($tipo === "dentista") ? "dentistas" : "recepcionistas";
-
-// Pega nome do usuário
-$stmt = $conn->prepare("SELECT nome FROM $tabela WHERE id = ?");
-$stmt->bind_param("i", $usuario_id);
-$stmt->execute();
-$res = $stmt->get_result();
-$usuario = $res->fetch_assoc();
-$nome_usuario = $usuario ? htmlspecialchars($usuario['nome']) : "Usuário";
-
-// Busca consultas
 $sql = "SELECT c.id, c.nome_paciente, c.telefone, c.data_consulta, c.hora_consulta, 
-               d.nome AS nome_dentista, c.observacoes, c.status 
+               d.nome AS dentista_nome, c.status
         FROM consultas c
         JOIN dentistas d ON c.dentista_id = d.id
         WHERE c.status != 'cancelado'
         ORDER BY c.data_consulta, c.hora_consulta";
 $result = mysqli_query($conn, $sql);
-if (!$result) {
-    die("Erro ao buscar consultas: " . mysqli_error($conn));
+
+$consultas = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $cor = '';
+    switch (strtolower($row['status'])) {
+        case 'confirmado':
+            $cor = '#28a745';
+            break;
+        case 'pendente':
+            $cor = '#ffc107';
+            break;
+        default:
+            $cor = '#007bff';
+    }
+
+    $start = $row['data_consulta'] . 'T' . $row['hora_consulta'];
+    $startDateTime = new DateTime($start);
+    $endDateTime = clone $startDateTime;
+    $endDateTime->modify('+30 minutes');
+
+    $consultas[] = [
+        'id' => $row['id'],
+        'title' => $row['nome_paciente'] . " - " . $row['dentista_nome'],
+        'start' => $startDateTime->format('Y-m-d\TH:i:s'),
+        'end' => $endDateTime->format('Y-m-d\TH:i:s'),
+        'backgroundColor' => $cor,
+        'borderColor' => $cor,
+        'extendedProps' => [
+            'paciente' => $row['nome_paciente'],
+            'dentista' => $row['dentista_nome'],
+            'hora' => date("H:i", strtotime($row['hora_consulta'])),
+            'status' => ucfirst($row['status']),
+            'id' => $row['id']
+        ]
+    ];
 }
 ?>
 
@@ -38,136 +60,150 @@ if (!$result) {
 <head>
     <meta charset="UTF-8">
     <title>Consultas Agendadas</title>
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
     <link rel="stylesheet" href="css/estilo.css?v=<?= time(); ?>">
     <style>
-        .tabela-consultas {
-            max-width: 1000px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .tabela-consultas h2 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-        .tabela-consultas p {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th, td {
-            padding: 12px;
-            border: 1px solid #ccc;
-            text-align: center;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        a.confirmar {
-            color: green;
-            font-weight: bold;
-            text-decoration: none;
-            margin-right: 8px;
-        }
-
-        a.desmarcar {
-            color: purple;
-            font-weight: bold;
-            text-decoration: none;
-        }
-
-        a.confirmar:hover,
-        a.desmarcar:hover {
-            text-decoration: underline;
-        }
-
-        .btn-warning {
-            background-color:rgb(197, 255, 7);
-            color: #000;
-            text-decoration: none;
-            padding: 6px 10px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-
-        .btn-warning:hover {
-            background-color:rgb(0, 224, 52);
-        }
+    .calendar-container {
+        max-width: 90vw;
+        margin: 20px auto;
+    }
+    #calendar {
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        min-height: 700px;
+    }
+    .tooltip-custom {
+        position: absolute;
+        background: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        display: none;
+        z-index: 9999;
+        font-size: 14px;
+        max-width: 250px;
+    }
+    .btn-reagendar, .btn-desmarcar {
+        margin-top: 8px;
+        display: inline-block;
+        padding: 4px 8px;
+        font-size: 13px;
+        text-decoration: none;
+        border-radius: 5px;
+    }
+    .btn-reagendar {
+        background-color: #17a2b8;
+        color: white;
+    }
+    .btn-desmarcar {
+        background-color: #dc3545;
+        color: white;
+        margin-left: 5px;
+    }
+    .btn-fechar {
+        margin-top: 10px;
+        padding: 5px 10px;
+        background: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
     </style>
 </head>
 <body>
 
 <?php include('navbar.php'); ?>
 
-<div class="tabela-consultas">
-    <h2>Consultas Agendadas</h2>
-    <p>Bem-vindo(a), <?= $nome_usuario ?>!</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Paciente</th>
-                <th>Telefone</th>
-                <th>Data</th>
-                <th>Horário</th>
-                <th>Dentista</th>
-                <th>Observações</th>
-                <th>Status</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-        <?php while ($row = mysqli_fetch_assoc($result)) :
-            $status = strtolower($row['status']); ?>
-            <tr>
-                <td><?= htmlspecialchars($row['nome_paciente']); ?></td>
-                <td><?= htmlspecialchars($row['telefone']); ?></td>
-                <td><?= date("d/m/Y", strtotime($row['data_consulta'])); ?></td>
-                <td><?= date("H:i", strtotime($row['hora_consulta'])); ?></td>
-                <td><?= htmlspecialchars($row['nome_dentista']); ?></td>
-                <td><?= htmlspecialchars($row['observacoes']); ?></td>
-                <td>
-                    <?php
-                    switch ($status) {
-                        case 'pendente':
-                            echo '<span style="color: orange;">🔴 Pendente</span>';
-                            break;
-                        case 'confirmado':
-                            echo '<span style="color: green;">🟢 Confirmado</span>';
-                            break;
-                        case 'cancelado':
-                            echo '<span style="color: red;">❌ Cancelado</span>';
-                            break;
-                        default:
-                            echo htmlspecialchars($status);
-                    }
-                    ?>
-                </td>
-                <td>
-                    <?php if ($status === 'pendente') : ?>
-                        <a class="confirmar" href="confirmar_consulta.php?id=<?= $row['id']; ?>" onclick="return confirm('Confirmar esta consulta?')">✅ Confirmar</a>
-                    <?php endif; ?>
-                    <a class="desmarcar" href="desmarcar_consulta.php?id=<?= $row['id']; ?>" onclick="return confirm('Deseja mesmo desmarcar esta consulta?')">❌ Desmarcar</a>
-                    <br>
-                    <a class="btn-warning" href="reagendar_consulta.php?id=<?= $row['id']; ?>" style="margin-top: 5px;">🔄 Reagendar</a>
-                </td>
-            </tr>
-        <?php endwhile; ?>
-        </tbody>
-    </table>
+<div class="container-top">
+    <h2 class="text-center my-3">📋 Consultas Agendadas</h2>
 </div>
+
+<div class="calendar-container">
+    <div id="calendar"></div>
+</div>
+
+<div id="tooltip" class="tooltip-custom"></div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var tooltip = document.getElementById('tooltip');
+    var tooltipFixo = false;
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        locale: 'pt-br',
+        allDaySlot: false,
+        slotMinTime: "08:00:00",
+        slotMaxTime: "16:30:00",
+        slotDuration: "00:30:00",
+        hiddenDays: [0,6],
+        contentHeight: "auto",
+        expandRows: true,
+        events: <?= json_encode($consultas); ?>,
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'timeGridDay,timeGridWeek,dayGridMonth'
+        },
+        eventMouseEnter: function(info) {
+            if (!tooltipFixo) {
+                preencherTooltip(info);
+            }
+        },
+        eventMouseLeave: function(info) {
+            if (!tooltipFixo) {
+                tooltip.style.display = 'none';
+            }
+        },
+        eventClick: function(info) {
+            tooltipFixo = true;
+            preencherTooltip(info);
+        }
+    });
+
+    calendar.render();
+
+    window.fecharTooltip = function() {
+        tooltip.style.display = 'none';
+        tooltipFixo = false;
+    };
+
+    document.addEventListener('click', function(event) {
+        if (!calendarEl.contains(event.target) && !tooltip.contains(event.target)) {
+            tooltip.style.display = 'none';
+            tooltipFixo = false;
+        }
+    });
+
+    function preencherTooltip(info) {
+        var event = info.event.extendedProps;
+        tooltip.innerHTML = `
+            <strong>Paciente:</strong> ${event.paciente}<br>
+            <strong>Dentista:</strong> ${event.dentista}<br>
+            <strong>Hora:</strong> ${event.hora}<br>
+            <strong>Status:</strong> ${event.status}<br><br>
+            <a href="reagendar_consulta.php?id=${event.id}" class="btn-reagendar">🔄 Reagendar</a>
+            <a href="desmarcar_consulta.php?id=${event.id}" class="btn-desmarcar" onclick="return confirm('Deseja mesmo desmarcar?')">❌ Desmarcar</a>
+            <br><button class="btn-fechar" onclick="fecharTooltip()">Fechar</button>
+        `;
+        tooltip.style.display = 'block';
+        tooltip.style.left = (info.jsEvent.pageX + 15) + 'px';
+        tooltip.style.top = (info.jsEvent.pageY + 15) + 'px';
+    }
+});
+</script>
+
+  <!-- 🔹 Rodapé -->
+  <footer>
+    <p>&copy; 2025 Clínica Oral Care. Todos os direitos reservados.</p>
+  </footer>
+
 
 </body>
 </html>

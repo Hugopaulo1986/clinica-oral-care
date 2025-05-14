@@ -22,6 +22,22 @@ $nome = $usuario ? $usuario['nome'] : "Dentista";
     <title>Painel do Dentista</title>
     <link rel="stylesheet" href="css/estilo.css?v=<?= time(); ?>">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            flex: 1;
+        }
+        footer {
+            background-color: #1ABC9C;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -55,5 +71,8 @@ $nome = $usuario ? $usuario['nome'] : "Dentista";
     </div>
 </div>
 
+<footer>
+    <p>&copy; 2025 Clínica Oral Care. Todos os direitos reservados.</p>
+</footer>
 </body>
 </html>

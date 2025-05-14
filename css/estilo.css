@@ -55,7 +55,7 @@ header {
 /* 🔹 Texto no Banner */
 .banner h1 {
     font-size: 42px;
-    color: #222;
+    color: #0f665a;
     text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
     font-weight: bold;
     margin-bottom: 10px;
@@ -133,7 +133,7 @@ header {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 320px;
-    color: #222;
+    color: #0f665a;
     text-align: center;
 }
 
@@ -354,4 +354,34 @@ h2 {
 main.container {
     margin-top: 40px;
     margin-bottom: 40px;
+}
+.contato-box {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 30px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+.contato-box .card {
+    flex: 1;
+    max-width: 400px;
+    padding: 20px;
+    background: #eaeaea;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.mapa-container {
+    margin-top: 20px;
+}
+
+.card h4 {
+    color: #0f665a;
+    margin-bottom: 15px;
+}
+/* 🔹 Cor personalizada para textos importantes (verde OralCare) */
+.text-oralcare {
+    color: #0f665a !important;
 }

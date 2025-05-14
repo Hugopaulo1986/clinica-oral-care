@@ -186,4 +186,9 @@ session_start();
     </div>
 
 </body>
+  <!-- 🔹 Rodapé -->
+  <footer>
+    <p>&copy; 2025 Clínica Oral Care. Todos os direitos reservados.</p>
+  </footer>
+
 </html>
