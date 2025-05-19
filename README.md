@@ -1,6 +1,8 @@
 # Sistema de Gerenciamento de Consultas Odontológicas - Clínica Oral Care 🦷
 
-Este projeto é um sistema completo para gerenciamento de agendamentos em clínicas odontológicas, desenvolvido como Trabalho de Conclusão de Curso (TCC) no curso de Engenharia de Software.
+Sistema web para gerenciamento de agendamentos odontológicos, desenvolvido como Trabalho de Conclusão de Curso (TCC) no curso de Engenharia de Software.
+
+---
 
 ## 📋 Funcionalidades
 
@@ -14,6 +16,8 @@ Este projeto é um sistema completo para gerenciamento de agendamentos em clíni
 - 🧾 Integração com Plano de Saúde (campo informativo)
 - 🔐 Sistema de Login com controle de acesso (paciente, dentista, recepcionista)
 
+---
+
 ## 🛠️ Tecnologias Utilizadas
 
 - PHP 8.2
@@ -23,49 +27,65 @@ Este projeto é um sistema completo para gerenciamento de agendamentos em clíni
 - FullCalendar.js
 - SendGrid API (via cURL e PHP)
 - PHPMailer (opcional)
-- Composer (gerenciador de dependências)
+- Composer
+
+---
 
 ## 🧱 Estrutura do Projeto
 
-/clinica-oral-care/ ├── index.php ├── login.php ├── cadastro_paciente.php ├── agendamento_consulta.php ├── reagendar_consulta.php ├── confirmar_consulta.php ├── registrar_procedimento.php ├── config.php # ⚠️ Protegido por .gitignore ├── .env.example # ✅ Exemplo de variáveis de ambiente ├── .gitignore # ✅ Arquivos que não sobem ao Git ├── composer.json ├── /logs/ # Logs de lembretes e envio ├── /vendor/ # Dependências (gerado por Composer) └── README.md
+```bash
+/clinica-oral-care/
+├── index.php
+├── login.php
+├── cadastro_paciente.php
+├── agendamento_consulta.php
+├── reagendar_consulta.php
+├── confirmar_consulta.php
+├── registrar_procedimento.php
+├── config.php             # ⚠️ Protegido por .gitignore
+├── .env.example           # ✅ Exemplo de variáveis de ambiente
+├── .gitignore             # Arquivos que não sobem ao Git
+├── composer.json
+├── /logs/                 # Logs de lembretes e envio
+├── /vendor/               # Dependências (gerado por Composer)
+└── README.md
 
-## ⚙️ Instalação
+⚙️ Instalação
+1. Clone o repositório
+git clone https://github.com/Hugopaulo1986/clinica-oral-care.git
+cd clinica-oral-care
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/Hugopaulo1986/clinica-oral-care.git
-   cd clinica-oral-care
+2. Instale as dependências
+composer install
 
-2. Instale as dependências:
-
-    composer install
-
-3. Crie seu próprio arquivo .env baseado no .env.example:
-  
+3.Crie o arquivo .env baseado no .env.example
 SENDGRID_API_KEY=SUACHAVEAQUI
 DB_HOST=localhost
 DB_USER=root
 DB_PASSWORD=
 DB_DATABASE=teste_db
 
+4. Configure seu ambiente local
+Use XAMPP ou WAMP
 
-4. Configure seu ambiente local (XAMPP/WAMP) com banco de dados MySQL.
+Crie o banco de dados MySQL e importe o script SQL
 
-5. Acesse no navegador: http://localhost/clinica-oral-care
+5. Acesse no navegador
+http://localhost/clinica-oral-care
 
-🛡️ Segurança
-Uso de session_start() para controle de sessão por perfil.
+Segurança
+Uso de session_start() para controle de sessão por perfil
 
-Recomenda-se password_hash() e password_verify() no login.
+Recomenda-se password_hash() e password_verify() no login
 
-Chave da API do SendGrid carregada via variável de ambiente (.env).
+Chave do SendGrid carregada via .env
 
-Arquivos como config.php, .env e logs estão protegidos por .gitignore.
+config.php, .env e logs protegidos por .gitignore
 
-O repositório está livre de segredos (chaves removidas do histórico Git).
+Repositório livre de segredos (sem chaves no histórico Git)
 
 👨‍🎓 Autor
 Hugo Manuel Rodrigues Paulo
-Centro Universitário da Grande Dourados
+Centro Universitário da Grande Dourados (UNIGRAN)
 TCC de Engenharia de Software – 2025
-Orientador: Prof. André 
+Orientador: Prof. André Martins do Nascimento
