@@ -2,8 +2,6 @@
 
 Sistema web para gerenciamento de agendamentos odontológicos, desenvolvido como Trabalho de Conclusão de Curso (TCC) no curso de Engenharia de Software.
 
-## 🖼️ Demonstração do Sistema
-
 ### 🏠 Tela Inicial
 ![Tela Inicial](img/tela_index.jpg)
 
