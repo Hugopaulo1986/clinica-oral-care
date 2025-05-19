@@ -2,31 +2,6 @@
 
 Sistema web para gerenciamento de agendamentos odontológicos, desenvolvido como Trabalho de Conclusão de Curso (TCC) no curso de Engenharia de Software.
 
-### 🏠 Tela Inicial
-![Tela Inicial](img/tela_index.jpg)
-
-### 📅 Agendamento de Consulta
-![Agendar Consulta](img/tela_agendamento.jpg)
-
-### 👨‍⚕️ Cadastro de Pacientes
-![Cadastro de Pacientes](img/tela_cadastro_paciente.jpg)
-
-### 📆 Consultas Agendadas no Painel do Dentista
-![Consultas Agendadas](img/tela_consultas_dentista.jpg)
-
-### 📋 Histórico de Consultas do Paciente
-![Histórico do Paciente](img/tela_historico_paciente.jpg)
-
-### 🦷 Registrar Procedimentos
-![Registrar Procedimento](img/tela_registrar_procedimento.jpg)
-
-### 📇 Pacientes Cadastrados
-![Pacientes Cadastrados](img/tela_pacientes_cadastrados.jpg)
-
-### 📬 Página de Contato
-![Página de Contato](img/tela_contato.jpg)
-
-
 ## 📋 Funcionalidades
 
 - ✅ Cadastro de Pacientes
